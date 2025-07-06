@@ -197,7 +197,7 @@ pxr::HdResourceRegistrySharedPtr
 RenderDelegate::GetResourceRegistry() const
 {
     static pxr::HdResourceRegistrySharedPtr ptr;
-    if (not ptr) ptr.reset(new pxr::HdResourceRegistry());
+    if (!ptr) ptr.reset(new pxr::HdResourceRegistry());
     return ptr;
 }
 
@@ -284,12 +284,12 @@ RenderDelegate::CreateRprim(pxr::TfToken const& typeId,
         return new Points(rprimId);
     } else  if (typeId == pxr::HdPrimTypeTokens->volume) {
         auto p = new Volume(rprimId);
-        if (not rprimId.IsEmpty())
+        if (!rprimId.IsEmpty())
             mVolumes.insert(p);
         return p;
     } else  if (typeId == proceduralToken) {
         auto p = new Procedural(rprimId);
-        if (not rprimId.IsEmpty())
+        if (!rprimId.IsEmpty())
             mProcedurals.insert(p);
         return p;
     } else {
@@ -323,7 +323,7 @@ RenderDelegate::CreateSprim(pxr::TfToken const& typeId,
         return new LightFilter(typeId,sprimId);
     } else if (Light::isSupportedType(typeId)) {
         auto p = new Light(typeId, sprimId);
-        if (not sprimId.IsEmpty())
+        if (!sprimId.IsEmpty())
             mLights.insert(p);
         return p;
     }
@@ -375,7 +375,7 @@ RenderDelegate::DestroyBprim(pxr::HdBprim *bPrim)
 void
 RenderDelegate::setSceneDelegate(pxr::HdSceneDelegate* sceneDelegate)
 {
-    if (not mUsdImagingDelegate) {
+    if (!mUsdImagingDelegate) {
         mUsdImagingDelegate = dynamic_cast<pxr::UsdImagingDelegate*>(sceneDelegate);
     }
 }
@@ -409,9 +409,9 @@ RenderDelegate::setRenderTags(pxr::HdRenderIndex* index, const pxr::TfTokenVecto
     // by turning off any rprims with a removed purpose
     pxr::TfTokenVector removed;
     for (auto& t : mRenderTags)
-        if (not contains(tags, t)) removed.push_back(t);
+        if (!contains(tags, t)) removed.push_back(t);
     mRenderTags = tags;
-    if (not removed.empty()) {
+    if (!removed.empty()) {
         for (auto& id : index->GetRprimIds()) {
             if (contains(removed, index->GetRenderTag(id)))
                 (const_cast<pxr::HdRprim*>(index->GetRprim(id)))->Finalize(&renderParam);
@@ -478,9 +478,9 @@ RenderDelegate::initializeSceneContext()
 scene_rdl2::rdl2::Material*
 RenderDelegate::defaultMaterial()
 {
-    if (not mDefaultMaterial) {
+    if (!mDefaultMaterial) {
         std::lock_guard<std::mutex> lock(mCreateMutex);
-        if (not mDefaultMaterial) {
+        if (!mDefaultMaterial) {
             scene_rdl2::rdl2::SceneContext& wsc = acquireSceneContext();
             scene_rdl2::rdl2::Map* displayColor = wsc.createSceneObject("AttributeMap", "displayColor")->asA<scene_rdl2::rdl2::Map>();
             {   UpdateGuard guard(displayColor);
@@ -507,9 +507,9 @@ RenderDelegate::defaultMaterial()
 scene_rdl2::rdl2::Material*
 RenderDelegate::errorMaterial()
 {
-    if (not mErrorMaterial) {
+    if (!mErrorMaterial) {
         std::lock_guard<std::mutex> lock(mCreateMutex);
-        if (not mErrorMaterial) {
+        if (!mErrorMaterial) {
             scene_rdl2::rdl2::SceneContext& wsc = acquireSceneContext();
             mErrorMaterial = wsc.createSceneObject("UsdPreviewSurface", "errorMaterial")->asA<scene_rdl2::rdl2::Material>();
             UpdateGuard guard(mErrorMaterial);
@@ -522,9 +522,9 @@ RenderDelegate::errorMaterial()
 scene_rdl2::rdl2::VolumeShader*
 RenderDelegate::defaultVolumeShader()
 {
-    if (not mDefaultVolumeShader) {
+    if (!mDefaultVolumeShader) {
         std::lock_guard<std::mutex> lock(mCreateMutex);
-        if (not mDefaultVolumeShader) {
+        if (!mDefaultVolumeShader) {
             scene_rdl2::rdl2::SceneContext& wsc = acquireSceneContext();
             mDefaultVolumeShader = wsc.createSceneObject("BaseVolume", "defaultVolumeShader")->asA<scene_rdl2::rdl2::VolumeShader>();
         }
@@ -590,9 +590,9 @@ RenderDelegate::updateAssignmentFromCategories(
     const auto& mCategoryObjects = this->mCategoryObjects; // prevent non-const set operations
 
     // create the default light if there are no lights
-    if (not mNumLights && not mDefaultLight) {        
+    if (!mNumLights && !mDefaultLight) {        
         std::lock_guard<std::mutex> lock(mCreateMutex);
-        if (not mDefaultLight) {
+        if (!mDefaultLight) {
             scene_rdl2::rdl2::SceneContext& wsc = acquireSceneContext();
             scene_rdl2::rdl2::Light* defaultLight = wsc.createSceneObject("EnvLight", "defaultLight")->asA<scene_rdl2::rdl2::Light>();
             setCategory(defaultLight, CategoryType::LightLink, pxr::TfToken());
@@ -622,7 +622,7 @@ RenderDelegate::updateAssignmentFromCategories(
     // the set for shadows is inverted
     {std::set<scene_rdl2::rdl2::SceneObject*> noShadowSet;
     for (auto& i : sets[CategoryType::LightLink]) {
-        if (not sets[CategoryType::ShadowLink].count(i))
+        if (!sets[CategoryType::ShadowLink].count(i))
             noShadowSet.insert(i);
     }
     std::swap(sets[CategoryType::ShadowLink], noShadowSet);}
@@ -638,7 +638,7 @@ RenderDelegate::updateAssignmentFromCategories(
 
     if (sets[CategoryType::LightLink].empty()) {
         // must be set to a valid LightSet object, even if empty (MOONRAY-4854)
-        if (not mEmptyLightSet) {
+        if (!mEmptyLightSet) {
             scene_rdl2::rdl2::SceneContext& wsc = acquireSceneContext();
             mEmptyLightSet = wsc.createSceneObject("LightSet", "emptyLightSet")->asA<scene_rdl2::rdl2::LightSet>();
         }
@@ -646,7 +646,7 @@ RenderDelegate::updateAssignmentFromCategories(
     } else {
         unsigned h = hash[CategoryType::LightLink];
         scene_rdl2::rdl2::LightSet*& set = mLightSets[h];
-        if (not set) {
+        if (!set) {
             char name[20]; snprintf(name, 20, "LightSet%06X", h);
             set = createSceneObject("LightSet", name)->asA<scene_rdl2::rdl2::LightSet>();
             UpdateGuard guard(set);
@@ -660,7 +660,7 @@ RenderDelegate::updateAssignmentFromCategories(
     } else {
         unsigned h = hash[CategoryType::ShadowLink];
         scene_rdl2::rdl2::ShadowSet*& set = mShadowSets[h];
-        if (not set) {
+        if (!set) {
             char name[20]; snprintf(name, 20, "ShadowSet%06X", h);
             set = createSceneObject("ShadowSet", name)->asA<scene_rdl2::rdl2::ShadowSet>();
             UpdateGuard guard(set);
@@ -674,7 +674,7 @@ RenderDelegate::updateAssignmentFromCategories(
     } else {
         unsigned h = hash[CategoryType::FilterLink];
         scene_rdl2::rdl2::LightFilterSet*& set = mLightFilterSets[h];
-        if (not set) {
+        if (!set) {
             char name[20]; snprintf(name, 20, "LightFilterSet%06X", h);
             set = createSceneObject("LightFilterSet", name)->asA<scene_rdl2::rdl2::LightFilterSet>();
             UpdateGuard guard(set);

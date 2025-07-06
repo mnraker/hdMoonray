@@ -67,7 +67,7 @@ Volume::syncAttributes(HdSceneDelegate* sceneDelegate,
             geometry()->set(attributeName, grid);
                     
             const std::string& fp = field->filePath();
-            if (not fp.empty()) {
+            if (!fp.empty()) {
                 if (filePath && *filePath != fp) {
                     Logger::error(GetId(), " all fields must use same vdb file");
                     break;
@@ -120,7 +120,7 @@ OpenVdbAsset::Sync(HdSceneDelegate *sceneDelegate,
         v = sceneDelegate->Get(id, fieldNameToken);
         mName = v.Get<TfToken>();
         v = sceneDelegate->GetLightParamValue(id, fieldIndexToken);
-        mIndex = (not v.IsEmpty()) ? v.Get<int>() : -1;
+        mIndex = (!v.IsEmpty()) ? v.Get<int>() : -1;
     }
     *dirtyBits = Clean;
     hdmLogSyncEnd(id);

@@ -92,10 +92,10 @@ LightFilter::syncProjector(const pxr::SdfPath& id,
         path.ReplacePrefix(pxr::SdfPath::AbsoluteRootPath(), sceneDelegate->GetDelegateID());
         SceneObject* so = hdMoonray::Camera::createCamera(sceneDelegate, renderDelegate, path);
         mLightFilter->set("projector", so);
-        if (not so) {
+        if (!so) {
             Logger::error(GetId(), ".moonray:projector: ", path, " not found");
         }
-    } else if (not val.IsEmpty()) {
+    } else if (!val.IsEmpty()) {
         Logger::error(GetId(), ".moonray:projector: must be a path");
     }
 }
@@ -150,7 +150,7 @@ LightFilter::syncCombineFilters(const pxr::SdfPath& id,
             }
         }
         mLightFilter->set("light_filters", rdlObjects);
-    } else if (not val.IsEmpty()) {
+    } else if (!val.IsEmpty()) {
         Logger::error(GetId(), ".moonray:light_filters: must be a list of paths");
     }
 }
@@ -210,7 +210,7 @@ LightFilter::getOrCreateFilter(pxr::HdSceneDelegate *sceneDelegate,
                                const pxr::SdfPath& id)
 {
     std::lock_guard<std::mutex> lock(mCreateMutex);
-    if (not mLightFilter) {
+    if (!mLightFilter) {
         pxr::VtValue vtClass = sceneDelegate->GetLightParamValue(id, moonrayClassToken);
         pxr::TfToken classToken;
         if (vtClass.IsHolding<pxr::TfToken>()) {
@@ -261,7 +261,7 @@ LightFilter::Finalize(pxr::HdRenderParam *renderParam)
 /*static*/ LightFilter*
 get(pxr::HdSceneDelegate* sceneDelegate, const pxr::SdfPath& filterId)
 {
-    if (not filterId.IsEmpty()) {
+    if (!filterId.IsEmpty()) {
         LightFilter* filterPrim = static_cast<LightFilter*>(
             sceneDelegate->GetRenderIndex().GetSprim(lightFilterToken, filterId));
         if (filterPrim) {

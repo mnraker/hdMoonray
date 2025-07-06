@@ -366,21 +366,21 @@ Light::Sync(pxr::HdSceneDelegate *sceneDelegate,
     // HDM-125: usdview sets the intensity of lights to 0.0f if "Enable Scene Lights" is turned off,
     // so treat intensity=0 as turning off the light. Also turn it off when lighting disabled.
     float intensity = 0.0f;
-    if (not renderDelegate.getDisableLighting() && sceneDelegate->GetVisible(id)) {
+    if (!renderDelegate.getDisableLighting() && sceneDelegate->GetVisible(id)) {
         pxr::VtValue val = sceneDelegate->GetLightParamValue(id, pxr::HdLightTokens->intensity);
         intensity = val.IsHolding<float>() ? val.UncheckedGet<float>() : 1.0f;
     }
 
     bool initialize = false;
-    if (not mLight) {
+    if (!mLight) {
         *dirtyBits = DirtyBits::Clean; // don't call Sync again if no light is created
-        if (not (intensity > 0)) return; // don't create invisible lights
+        if (!(intensity > 0)) return; // don't create invisible lights
         // currently if the class changes, Finalize() is called, so there is no need to check
         // for this after the object is created.
         const std::string& rdlClass = rdlClassName(id, sceneDelegate);
         scene_rdl2::rdl2::SceneObject* object = renderDelegate.createSceneObject(rdlClass, id);
         mLight = object ? object->asA<scene_rdl2::rdl2::Light>() : nullptr;
-        if (not mLight) return; // if there was an error this already printed an error message
+        if (!mLight) return; // if there was an error this already printed an error message
         initialize = true; // Force the catagories to be updated
         *dirtyBits = pxr::HdLight::AllDirty; // force other settings to be made
     }

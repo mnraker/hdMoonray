@@ -58,7 +58,7 @@ public:
 
     /// A null RenderOutput* indicates the beauty buffer. This function should be used to test this
     /// so it can be grepped for:
-    static bool isBeauty(const scene_rdl2::rdl2::RenderOutput* ro) { return not ro; }
+    static bool isBeauty(const scene_rdl2::rdl2::RenderOutput* ro) { return !ro; }
 
     /// Update the PixelData to point to readable memory of correct size. Return false if none.
     /// The expected size and channels are in "request" in case this cannot otherwise be determined.
@@ -78,7 +78,7 @@ public:
     virtual void invalidateAllTextureResources()=0;
     virtual void restartRenderer()=0;
     virtual void outputRdl(const std::string& rdlOutput) {
-        if (not rdlOutput.empty()) {
+        if (!rdlOutput.empty()) {
             scene_rdl2::rdl2::writeSceneToFile(*mSceneContext,
                                                rdlOutput,
                                                false, // deltas

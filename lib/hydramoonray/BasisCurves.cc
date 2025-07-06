@@ -127,12 +127,12 @@ BasisCurves::syncDisplayStyle(const HdDisplayStyle& style)
     // moonray:curves_subtype and moonray::tessellation_rate
     static TfToken curvesSubtypeToken("moonray:curves_subtype");
     static TfToken tessellationRateToken("moonray:tessellation_rate");
-    if (not isPrimvarUsed(curvesSubtypeToken)) {
+    if (!isPrimvarUsed(curvesSubtypeToken)) {
         bool round = style.refineLevel > REFINE_LEVEL_FLAT_CURVES;
         geometry()->set(rdlAttrCurvesSubtype, round ? rdlCurvesSubtype_round : 
                                                       rdlCurvesSubtype_rayFacing);
     }
-    if (not isPrimvarUsed(tessellationRateToken)) {
+    if (!isPrimvarUsed(tessellationRateToken)) {
         int tessellationRate = (style.refineLevel < 1) ? TESS_RATE_LOW : TESS_RATE_NORMAL;
         geometry()->set(rdlAttrTessellationRate, tessellationRate);
     }

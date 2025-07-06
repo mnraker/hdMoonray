@@ -68,7 +68,7 @@ private:
     scene_rdl2::rdl2::RenderOutput* mMoreOutputs[INSTANCE_NESTING] = {0};
 
     bool isDepth() const { return mDepth; }
-    bool isBeauty() const { return not mRenderOutput; }
+    bool isBeauty() const { return !mRenderOutput; }
 
     // true after bind() is called
     bool mBound = false;
