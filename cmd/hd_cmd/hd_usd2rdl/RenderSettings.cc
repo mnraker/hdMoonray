@@ -27,9 +27,9 @@ RenderSettings::setRenderSetting(const std::string &key, const std::string &valu
         return -1;
     else if (value.find('.') != value.npos)
         v = strtof(value.c_str(), &endptr);
-    else if (not strcasecmp(value.c_str(), "false"))
+    else if (!strcasecmp(value.c_str(), "false"))
         v = false;
-    else if (not strcasecmp(value.c_str(), "true"))
+    else if (!strcasecmp(value.c_str(), "true"))
         v = true;
     else
         v = int(strtol(value.c_str(), &endptr, 0));
