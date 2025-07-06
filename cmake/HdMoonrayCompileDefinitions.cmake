@@ -21,4 +21,13 @@ function(${PROJECT_NAME}_cxx_compile_definitions target)
             TBB_SUPPRESS_DEPRECATED_MESSAGES        # Suppress 'deprecated' messages from TBB
             _LIBCPP_ENABLE_CXX17_REMOVED_FEATURES=1 # Need std::auto_ptr , std::random_shuffle and std::unary_function
     )
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_definitions(${target}
+            PRIVATE
+                BOOST_ALL_DYN_LINK
+                BOOST_ALL_NO_LIB
+                _USE_MATH_DEFINES
+                NOMINMAX
+        )
+    endif()
 endfunction()
