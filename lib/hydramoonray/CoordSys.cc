@@ -3,6 +3,8 @@
 
 #define GUESS 1
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "CoordSys.h"
 #include "Camera.h"
 #include "GeometryMixin.h"

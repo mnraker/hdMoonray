@@ -1,6 +1,8 @@
 // Copyright 2023-2024 DreamWorks Animation LLC
 // SPDX-License-Identifier: Apache-2.0
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "RenderDelegate.h"
 #include "BasisCurves.h"
 #include "Camera.h"

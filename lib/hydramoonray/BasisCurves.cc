@@ -12,6 +12,8 @@
 // display style ("complexity" in usd_view). As with other RDL geometry
 // attributes, these can be overridden by a primvar.
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "BasisCurves.h"
 #include "RenderDelegate.h"
 #include "HdmLog.h"

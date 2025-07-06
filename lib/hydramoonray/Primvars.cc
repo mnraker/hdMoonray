@@ -4,6 +4,8 @@
 // Contains primvar-related functions on GeometryMixin, split
 // out into this file as they are the most complex part of the code
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "GeometryMixin.h"
 #include "Instancer.h"
 #include "RenderDelegate.h"

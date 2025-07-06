@@ -9,6 +9,8 @@
 // Translates primvars to UserData, but only if the RDL class has the
 // "primitive_attributes" attribute
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "Procedural.h"
 #include "RenderDelegate.h"
 #include "ValueConverter.h"

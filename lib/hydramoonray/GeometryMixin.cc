@@ -3,6 +3,8 @@
 
 // Primvar-related functions on GeometryMixin are in Primvars.cc
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "GeometryMixin.h"
 #include "Instancer.h"
 #include "RenderDelegate.h"

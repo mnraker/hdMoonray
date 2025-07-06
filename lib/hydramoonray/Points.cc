@@ -4,6 +4,8 @@
 // Points are implemented using RdlPointGeometry
 // Very similar to (but simpler than) BasisCurves
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "Points.h"
 #include "RenderDelegate.h"
 #include "HdmLog.h"

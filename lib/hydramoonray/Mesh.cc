@@ -11,7 +11,8 @@
 // Supports "uv" or "st" for texture coords, and 
 // "normal" or "normals" for normals
 
-// 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "Mesh.h"
 #include "RenderDelegate.h"
 #include "Material.h"

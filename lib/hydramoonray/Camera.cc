@@ -7,6 +7,8 @@
 // which camera was used after the first render, so this copies all the perspective
 // cameras to a single primary camera. This may be fixed now and can be removed.
 
+#include <scene_rdl2/common/platform/Platform.h>
+
 #include "Camera.h"
 #include "GeometryMixin.h"
 #include "RenderDelegate.h"
