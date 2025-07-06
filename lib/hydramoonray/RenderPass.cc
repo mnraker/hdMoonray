@@ -76,7 +76,7 @@ RenderPass::_Execute(const pxr::HdRenderPassStateSharedPtr& renderPassState,
     }
 
     const Camera* camera(dynamic_cast<const Camera*>(renderPassState->GetCamera()));
-    if (not camera) {
+    if (!camera) {
         Logger::error("RenderPassState without camera is unsupported");
         // It could the view+proj matricies below and update a fake Camera. But
         // usdview is not using this.
@@ -104,7 +104,7 @@ RenderPass::_Execute(const pxr::HdRenderPassStateSharedPtr& renderPassState,
 
     const bool motionBlur = renderDelegate.getEnableMotionBlur() &&
                             motionSteps[0] < motionSteps[1];
-    if (not motionBlur) { motionSteps[0] = -1; motionSteps[1] = 0; }
+    if (!motionBlur) { motionSteps[0] = -1; motionSteps[1] = 0; }
 
     if (frame != sv.get(sv.sFrameKey) ||
         motionSteps != sv.get(sv.sMotionSteps) ||
@@ -141,7 +141,7 @@ RenderPass::_Execute(const pxr::HdRenderPassStateSharedPtr& renderPassState,
     const std::string& rdlOutput(renderDelegate.rdlOutput());
     if (rdlOutput != prevRdlaOutput) {
         prevRdlaOutput = rdlOutput;
-        if (not rdlOutput.empty()) {
+        if (!rdlOutput.empty()) {
             scene_rdl2::rdl2::writeSceneToFile(sc,
                                           rdlOutput,
                                           false, // deltas

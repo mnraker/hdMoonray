@@ -27,8 +27,8 @@ namespace {
     bool primvarFilter(const TfToken& name)
     {
         if (name.GetText()[0] == '_') return true; // Hydra internal variables
-        if (not strncmp(name.GetText(), "usd", 3)) return true; // sceneflow data
-        if (not strncmp(name.GetText(), "part:", 4)) return true; // obsolete part api
+        if (!strncmp(name.GetText(), "usd", 3)) return true; // sceneflow data
+        if (!strncmp(name.GetText(), "part:", 4)) return true; // obsolete part api
         static const std::set<TfToken> names {
             TfToken("PreMenvPosingRefPose"), // I think this may be something from Pixar's animation
             TfToken("gprimID"), // Hydra sets this but never requests it
@@ -106,7 +106,7 @@ GeometryMixin::syncPrimvars(HdSceneDelegate *sceneDelegate,
         }
     }
     // actually compute and update the dirty primvars we discovered
-    if (not dirtyCompPrimvars.empty()) {
+    if (!dirtyCompPrimvars.empty()) {
         HdExtComputationUtils::ValueStore valueStore =
             HdExtComputationUtils::GetComputedPrimvarValues(dirtyCompPrimvars, sceneDelegate);
         for (auto const& compPrimvar : dirtyCompPrimvars) {
@@ -124,7 +124,7 @@ GeometryMixin::syncPrimvars(HdSceneDelegate *sceneDelegate,
     for (size_t i = 0; i < HdInterpolationCount; ++i) {
         HdInterpolation interp = static_cast<HdInterpolation>(i);
         for (HdPrimvarDescriptor const& pv : rprim.GetPrimvarDescriptors(sceneDelegate, interp)) {
-            if (not isPrimvarUsed(pv.name) && not primvarFilter(pv.name)) {
+            if (!isPrimvarUsed(pv.name) && !primvarFilter(pv.name)) {
                 mAppliedPrimvars.insert(pv.name);
                 removedPrimvars.erase(pv.name);
                 if (HdChangeTracker::IsPrimvarDirty(*dirtyBits, id, pv.name)) {
@@ -181,7 +181,7 @@ GeometryMixin::primvarChanged(HdSceneDelegate *sceneDelegate,
     }
     
     // primvars starting with 'moonray:' act to override an RDL object attribute of the same name
-    if (not strncmp(name.GetText(), "moonray:", 8)) {
+    if (!strncmp(name.GetText(), "moonray:", 8)) {
         primvarAttributeOverride(name.GetString().substr(8), value);
         return;
     }

@@ -43,7 +43,7 @@ static bool
 ignorePrimvar(pxr::TfToken name)
 {
     if (name.GetText()[0] == '_') return true; // Hydra internal variables
-    if (not strncmp(name.GetText(), "usd", 3)) return true; // sceneflow data
+    if (!strncmp(name.GetText(), "usd", 3)) return true; // sceneflow data
     static const std::set<pxr::TfToken> names {
         pxr::TfToken("asset_name"), // bookeeping from Pixar
         pxr::TfToken("mesh_path"), // from sprinkles, huge array of repeated strings
@@ -144,10 +144,10 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
     scene_rdl2::rdl2::UserData* instanceId;
     {   std::lock_guard<std::mutex> lock(mMapMutex);
         scene_rdl2::rdl2::Geometry*& mapEntry = mInstancers[prototype];
-        if (not mapEntry) {
+        if (!mapEntry) {
             std::string name = prototype->getName() + "/Instancer";
             scene_rdl2::rdl2::SceneObject* object = renderDelegate.createSceneObject("RdlInstancerGeometry", name);
-            if (not object) return; // it already printed an error, give up
+            if (!object) return; // it already printed an error, give up
             mapEntry = object->asA<scene_rdl2::rdl2::Geometry>();
             renderDelegate.assign(mapEntry, scene_rdl2::rdl2::LayerAssignment());
             instanceId = renderDelegate.createSceneObject("UserData", prototype->getName() + "/instanceId")->asA<scene_rdl2::rdl2::UserData>();
@@ -277,7 +277,7 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
             instancer->set<int>("method", Method::XFORM_LIST);
             const pxr::VtValue& value = i->second.value;
             const pxr::VtMatrix4dArray& v = value.Get<pxr::VtMatrix4dArray>();
-            if (not v.empty()) {
+            if (!v.empty()) {
                 std::vector<pxr::GfMatrix4d> mv(count);
                 for (size_t i = 0; i < count; ++i)
                     mv[i] = v[indices[i] % v.size()];
@@ -295,7 +295,7 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
             if (i != mPrimvars.end()) {
                 const pxr::VtValue& value = i->second.value;
                 const pxr::VtVec3fArray& v = value.Get<pxr::VtVec3fArray>();
-                if (not v.empty()) {
+                if (!v.empty()) {
                     std::vector<pxr::GfVec3f> mv(count);
                     for (size_t i = 0; i < count; ++i)
                         mv[i] = v[indices[i] % v.size()];
@@ -314,7 +314,7 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
                 // in 0.21.11 the type of the rotations attr switched from VtVec4fArray to VtQuathArray
                 if (value.IsHolding<pxr::VtQuathArray>()) {
                     const pxr::VtQuathArray& quats = value.Get<pxr::VtQuathArray>();
-                    if (not quats.empty()) {
+                    if (!quats.empty()) {
                         std::vector<scene_rdl2::rdl2::Vec4f> vecs(count);
                         for (size_t i = 0; i < count; ++i) {
                             const pxr::GfQuath& quat = quats[indices[i] % quats.size()];
@@ -328,7 +328,7 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
                     }
                 } else {
                     const pxr::VtVec4fArray& v = value.Get<pxr::VtVec4fArray>();
-                    if (not v.empty()) {
+                    if (!v.empty()) {
                         std::vector<pxr::GfVec4f> mv(count);
                         for (size_t i = 0; i < count; ++i) {
                             const pxr::GfVec4f& q = v[indices[i] % v.size()];
@@ -346,7 +346,7 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
             if (i != mPrimvars.end()) {
                 const pxr::VtValue& value = i->second.value;
                 const pxr::VtVec3fArray& v = value.Get<pxr::VtVec3fArray>();
-                if (not v.empty()) {
+                if (!v.empty()) {
                     std::vector<pxr::GfVec3f> mv(count);
                     for (size_t i = 0; i < count; ++i)
                         mv[i] = v[indices[i] % v.size()];
@@ -357,7 +357,7 @@ Instancer::makeInstanceGeometry(const pxr::SdfPath& prototypeId, scene_rdl2::rdl
     }
 
     // This instancer may itself be a prototype for another instancer!
-    if (not GetParentId().IsEmpty()) {
+    if (!GetParentId().IsEmpty()) {
         Instancer* parent = (Instancer*)sceneDelegate->GetRenderIndex().GetInstancer(GetParentId());
         parent->makeInstanceGeometry(id, instancer, geometry, level+1, count * childCount);
     }

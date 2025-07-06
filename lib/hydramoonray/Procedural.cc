@@ -69,7 +69,7 @@ Procedural::syncAttributes(HdSceneDelegate* sceneDelegate,
               ++it) {
         const std::string& attrName = (*it)->getName();
         const TfToken primvarName("moonray:"+attrName);
-        if (not isPrimvarUsed(primvarName)) {
+        if (!isPrimvarUsed(primvarName)) {
             const TfToken proceduralName("procedural:"+attrName);
             VtValue val = sceneDelegate->Get(GetId(), proceduralName);
             if (val.IsEmpty()) {
@@ -132,7 +132,7 @@ Procedural::Sync(HdSceneDelegate* sceneDelegate,
     // dirtyBits, it is a questionable use of the Hydra interface...
     static const TfToken classToken("procedural:class");
     VtValue className(sceneDelegate->Get(GetId(),classToken));
-    if (not className.IsHolding<TfToken>()) {
+    if (!className.IsHolding<TfToken>()) {
         Logger::error(GetId(), " : requires procedural:class to be set");
         return;
     }

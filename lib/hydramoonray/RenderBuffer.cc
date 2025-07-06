@@ -126,7 +126,7 @@ void split(pxr::TfToken token, pxr::TfToken& prefix, pxr::TfToken& suffix)
             suffix = pxr::TfToken(s.substr(i+1));
             return;
         }
-        if (not isalnum(s[i])) break; // prefix has to be a plain word
+        if (!isalnum(s[i])) break; // prefix has to be a plain word
     }
     suffix = token;
 }
@@ -246,7 +246,7 @@ RenderBuffer::bind(const pxr::HdRenderPassAovBinding& aovBinding, const Camera* 
         if (idName.empty()) return;
         scene_rdl2::rdl2::SceneObject* dummyObject =
             mRenderDelegate->createSceneObject("RenderOutput", "dummy0");
-        if (not dummyObject) return;
+        if (!dummyObject) return;
 
         scene_rdl2::rdl2::RenderOutput* mDummyRenderOutput =
             dummyObject->asA<scene_rdl2::rdl2::RenderOutput>();
@@ -260,7 +260,7 @@ RenderBuffer::bind(const pxr::HdRenderPassAovBinding& aovBinding, const Camera* 
         //Add cryptomatte render output first
         scene_rdl2::rdl2::SceneObject* object =
             mRenderDelegate->createSceneObject("RenderOutput", "cryptomatte");
-        if (not object) return;
+        if (!object) return;
         mRenderOutput = object->asA<scene_rdl2::rdl2::RenderOutput>();
         auto& ro(*mRenderOutput);
         {
@@ -272,19 +272,19 @@ RenderBuffer::bind(const pxr::HdRenderPassAovBinding& aovBinding, const Camera* 
                 const std::string& attrName = (*it)->getName();
                 pxr::TfToken key = pxr::TfToken("parameters:moonray:" + attrName);
                 pxr::VtValue val = aovSettings[key];
-                if (not val.IsEmpty()) {
+                if (!val.IsEmpty()) {
                     ValueConverter::setAttribute(mRenderOutput, *it, val);
                 }
             }
         }
     }
     else {
-        if (not mRenderOutput) {
+        if (!mRenderOutput) {
             // use a name that will be consistent from run to run, to make it easier to compare
             // rdl files for testing
             const std::string ROId = "/_outputs/" + mAovName.GetString();
             scene_rdl2::rdl2::SceneObject* object = mRenderDelegate->createSceneObject("RenderOutput", ROId);
-            if (not object) return;
+            if (!object) return;
             mRenderOutput = object->asA<scene_rdl2::rdl2::RenderOutput>();
         }
         auto& ro(*mRenderOutput);
@@ -351,7 +351,7 @@ RenderBuffer::bind(const pxr::HdRenderPassAovBinding& aovBinding, const Camera* 
                 const std::string& attrName = (*it)->getName();
                 pxr::TfToken key = pxr::TfToken("parameters:moonray:" + attrName);
                 pxr::VtValue val = aovSettings[key];
-                if (not val.IsEmpty()) {
+                if (!val.IsEmpty()) {
                     ValueConverter::setAttribute(mRenderOutput, *it, val);
                 }
             }
@@ -363,7 +363,7 @@ RenderBuffer::bind(const pxr::HdRenderPassAovBinding& aovBinding, const Camera* 
             char letter = 'A'+i;
             scene_rdl2::rdl2::SceneObject* object =
                 mRenderDelegate->createSceneObject("RenderOutput", GetId().GetString() + letter);
-            if (not object) return;
+            if (!object) return;
             mMoreOutputs[i] = object->asA<scene_rdl2::rdl2::RenderOutput>();
             auto& ro(*mMoreOutputs[i]);
             {
@@ -390,7 +390,7 @@ RenderBuffer::Resolve()
 {
     hdmLogRenderBuffer("Resolve", GetId());
 
-    if (not bound()) {
+    if (!bound()) {
         hdmLogRenderBuffer("EndResolveUnbound", GetId());
         // Houdini does this, so don't treat as an error
         return;
@@ -399,7 +399,7 @@ RenderBuffer::Resolve()
     // See if the old image is ok
     // Return what we already have (which might be the initial buffer set by Allocate)
     Renderer& renderer = mRenderDelegate->renderer();
-    if (not renderer.resolve(mRenderOutput, mPixelData)) {
+    if (!renderer.resolve(mRenderOutput, mPixelData)) {
         hdmLogRenderBuffer("EndResolveUnchanged", GetId());
         return;
     }

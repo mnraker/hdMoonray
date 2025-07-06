@@ -84,7 +84,7 @@ void RenderSettings::apply()
 
     static const TfToken houdiniInteractive("houdini:interactive");
     VtValue val = mDelegate.GetRenderSetting(houdiniInteractive);
-    mDelegate.setIsHoudini(not val.IsEmpty());
+    mDelegate.setIsHoudini(!val.IsEmpty());
 
     // ---------------------------------------------------------------------------------
     // support render settings "moonray:sceneVariable:<name>" and "moonray:sceneVariable_<name>" for any
@@ -107,12 +107,12 @@ void RenderSettings::apply()
 
             TfToken key = TfToken("moonray:sceneVariable:" + attrName);
             VtValue val = mDelegate.GetRenderSetting(key);
-            if (not val.IsEmpty()) {
+            if (!val.IsEmpty()) {
                 ValueConverter::setAttribute(&sv, *it, val);
             } else {
                 key = TfToken("sceneVariable_" + attrName);
                 val = mDelegate.GetRenderSetting(key);
-                if (not val.IsEmpty()) {
+                if (!val.IsEmpty()) {
                     ValueConverter::setAttribute(&sv, *it, val);
                 }
             }
@@ -143,7 +143,7 @@ std::string
 RenderSettings::getExecutionMode() const
 {
     VtValue val = mDelegate.GetRenderSetting(Tokens->executionMode);
-    if (not val.IsEmpty()) {
+    if (!val.IsEmpty()) {
         return val.Get<std::string>();
     } else {
         return "auto";

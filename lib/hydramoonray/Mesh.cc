@@ -223,18 +223,18 @@ Mesh::syncSubdivScheme(const HdMeshTopology& topology,
     static TfToken adaptiveErrorToken("moonray:adaptive_error");
     static TfToken smoothNormalToken("moonray:smooth_normal");
 
-    if (not isPrimvarUsed(meshResolutionToken)) {
+    if (!isPrimvarUsed(meshResolutionToken)) {
         // to match Storm, use 1 << refineLevel for resolution
         float rdlResolution = 1 << refineLevel;
         geometry()->set(rdlAttrMeshResolution, rdlResolution);
     }
 
-    if (not isPrimvarUsed(adaptiveErrorToken)) {
+    if (!isPrimvarUsed(adaptiveErrorToken)) {
         float adaptive_error = topology.IsEnabledAdaptive() ? 1.0f : 0.0f;
         geometry()->set(rdlAttrAdaptiveError, adaptive_error);
     }
 
-    if (not isPrimvarUsed(smoothNormalToken)) {
+    if (!isPrimvarUsed(smoothNormalToken)) {
         // polygons should not autogenerate smooth normals, per UsdGeomMesh doc
         if (disableSubd)
             geometry()->set(rdlAttrSmoothNormal, false);
@@ -265,7 +265,7 @@ Mesh::syncSubdivTags(const PxOsdSubdivTags& tags)
 
 
     VtIntArray vi = tags.GetCreaseIndices();
-    if (not vi.empty()) {
+    if (!vi.empty()) {
         // Hydra has connected strings of edges. Convert to RdlMesh individual edges
         VtIntArray lengths(tags.GetCreaseLengths());
         const size_t edges = vi.size() - lengths.size();
@@ -294,7 +294,7 @@ Mesh::syncSubdivTags(const PxOsdSubdivTags& tags)
     }
 
     vi = tags.GetCornerIndices();
-    if (not vi.empty()) {
+    if (!vi.empty()) {
         geometry()->set(rdlAttrSubdCornerIndices, IntVector(&vi[0], &vi[0] + vi.size()));
         VtFloatArray vf = tags.GetCornerWeights();
         geometry()->set(rdlAttrSubdCornerSharpnesses, FloatVector(&vf[0], &vf[0] + vf.size()));

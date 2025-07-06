@@ -117,7 +117,7 @@ getCoordSysBinding(
             if (coordSysName.IsEmpty()) return nullptr;
             scene_rdl2::rdl2::SceneObject* sceneObject =
                 hdMoonray::CoordSys::getBinding(sceneDelegate, renderDelegate, geom->GetId(), coordSysName);
-            if (not sceneObject) {
+            if (!sceneObject) {
                 Logger::error(node.path, ".", key, ": failed to find binding for coordSys ", coordSysName);
             }
             return sceneObject;
@@ -225,7 +225,7 @@ Material::updateTerminal(pxr::TfToken terminalName,
                          pxr::HdSceneDelegate *sceneDelegate,
                          const pxr::HdRprim* geom)
 {
-    if (not isEnabled()) {
+    if (!isEnabled()) {
         return nullptr;
     }
 
@@ -430,7 +430,7 @@ Material::updateTerminal(pxr::TfToken terminalName,
         }
     }
 
-    if (not last && terminalName == pxr::HdMaterialTerminalTokens->surface) last = renderDelegate.errorMaterial();
+    if (!last && terminalName == pxr::HdMaterialTerminalTokens->surface) last = renderDelegate.errorMaterial();
     return last;
 }
 
@@ -499,10 +499,10 @@ Material::get(
     const pxr::HdRprim* geom,
     bool volume)
 {
-    if (not materialId.IsEmpty()) {
+    if (!materialId.IsEmpty()) {
         Material* mtlPrim = static_cast<Material*>(
             sceneDelegate->GetRenderIndex().GetSprim(pxr::HdPrimTypeTokens->material, materialId));
-        if (not mtlPrim) {
+        if (!mtlPrim) {
             Logger::error(geom->GetId(), ".material: ", materialId, " has no moonray or fallback shaders");
             layerAssignment.mMaterial = volume ? nullptr : renderDelegate.errorMaterial();
             layerAssignment.mDisplacement = nullptr;

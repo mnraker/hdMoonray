@@ -116,9 +116,9 @@ Camera::Sync(pxr::HdSceneDelegate* sceneDelegate,
 scene_rdl2::rdl2::Camera*
 Camera::createCamera(pxr::HdSceneDelegate* sceneDelegate, RenderDelegate& renderDelegate)
 {
-    if (not mCamera) {
+    if (!mCamera) {
         std::lock_guard<std::mutex> lock(mCreateMutex);
-        if (not mCamera) {
+        if (!mCamera) {
             mCamera = renderDelegate.createSceneObject(mClass.GetString(), GetId())->asA<scene_rdl2::rdl2::Camera>();
             updateCamera(sceneDelegate, renderDelegate, DirtyBits::AllDirty);
         }
@@ -268,13 +268,13 @@ Camera::updateCamera(pxr::HdSceneDelegate* sceneDelegate, RenderDelegate& render
         }
 
         v = sceneDelegate->GetCameraParamValue(id, pxr::HdCameraTokens->shutterOpen);
-        if (not v.IsEmpty()) {
+        if (!v.IsEmpty()) {
             const float shutterOpen = (v.IsHolding<double>()) ? (v.UncheckedGet<double>()) : v.Get<float>();
             mCamera->set(mCamera->sMbShutterOpenKey, shutterOpen);
         }
 
         v = sceneDelegate->GetCameraParamValue(id, pxr::HdCameraTokens->shutterClose);
-        if (not v.IsEmpty()) {
+        if (!v.IsEmpty()) {
             const float shutterClose = (v.IsHolding<double>()) ? (v.UncheckedGet<double>()) : v.Get<float>();
             mCamera->set(mCamera->sMbShutterCloseKey, shutterClose);
         }
@@ -285,7 +285,7 @@ Camera::updateCamera(pxr::HdSceneDelegate* sceneDelegate, RenderDelegate& render
             const std::string& attrName = (*it)->getName();
 
             pxr::VtValue val = sceneDelegate->GetCameraParamValue(id, pxr::TfToken("moonray:"+attrName));
-            if (not val.IsEmpty()) {
+            if (!val.IsEmpty()) {
                 ValueConverter::setAttribute(mCamera, *it, val);
             }
             // Fixme: if value is not set it should be reset to default
@@ -326,7 +326,7 @@ Camera::setAsPrimaryCamera(RenderDelegate& renderDelegate, double aspectRatio)
     if (mClass == PerspectiveCameraToken) {
         // update single perspective camera in-place
         if (this == pCamera) {
-            if (not mXformChanged && not mProjChanged && not mParamsChanged) return;
+            if (!mXformChanged && !mProjChanged && !mParamsChanged) return;
         } else {
             pCamera = this;
             mXformChanged = mProjChanged = mParamsChanged = true;
