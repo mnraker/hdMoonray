@@ -8,7 +8,11 @@
 
 namespace hdMoonray {
 
-#define	FORCE_INLINE inline __attribute__((always_inline))
+#ifdef _MSC_VER
+#define FORCE_INLINE inline
+#else
+#define FORCE_INLINE inline __attribute__((always_inline))
+#endif
 
 inline uint32_t rotl32 ( uint32_t x, int8_t r )
 {
