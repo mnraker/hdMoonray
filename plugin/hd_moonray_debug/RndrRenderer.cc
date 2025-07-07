@@ -129,8 +129,8 @@ RndrRenderer::resolve(scene_rdl2::rdl2::RenderOutput* ro, PixelData& pd)
 
     //std::cout << "RndrRenderer::resolve " << (ro ? ro->getName() : "beauty") << std::endl;
 
-    if (isHoudini() && not mUpdateActive) { // HDM-183 detect Houdini-18 hanging
-        if (not setPrevRo) {
+    if (isHoudini() && !mUpdateActive) { // HDM-183 detect Houdini-18 hanging
+        if (!setPrevRo) {
             setPrevRo = true;
             prevRo = ro;
         } else if (ro == prevRo) {
@@ -142,11 +142,11 @@ RndrRenderer::resolve(scene_rdl2::rdl2::RenderOutput* ro, PixelData& pd)
 
     if (mFailure) return false;
 
-    if (not mRenderContext->isFrameReadyForDisplay()) {
+    if (!mRenderContext->isFrameReadyForDisplay()) {
         // tiles can have garbage in them before isFrameReadyForDisplay, avoid showing it
         if (mResized) return false; // resized array is always bad
         // if render has been stopped show it anyway, so animation works:
-        if (not mUpdateActive && not mPaused) return false;
+        if (!mUpdateActive && !mPaused) return false;
     }
     // see if no change since last time
     unsigned n = mRenderContext->getFilmActivity();
@@ -320,9 +320,9 @@ RndrRenderer::beginUpdate()
     std::cerr << ">> RndrRenderer.cc beginUpdate()\n";
 #   endif // end DEBUG_MSG
 
-    if (not mUpdateActive) {
+    if (!mUpdateActive) {
         std::lock_guard<std::mutex> guard(mMutex);
-        if (not mUpdateActive) {
+        if (!mUpdateActive) {
             stopFrame();
             mUpdateActive = true;
             mFrameComplete = false;
@@ -343,7 +343,7 @@ RndrRenderer::endUpdate()
             // std::cout << "endUpdate\n";
             mUpdateActive = false;
             mRenderContext->setSceneUpdated();
-            if (not mRenderContext->isInitialized()) {
+            if (!mRenderContext->isInitialized()) {
                 std::stringstream initmessages; // dummy
                 mRenderContext->initialize(initmessages);
             }
@@ -386,7 +386,7 @@ RndrRenderer::resume()
 
     std::lock_guard<std::mutex> guard(mMutex);
     mPaused = false;
-    if (not mFrameComplete) mUpdateActive = true; // endUpdate() will restart the render
+    if (!mFrameComplete) mUpdateActive = true; // endUpdate() will restart the render
 }
 
 bool
@@ -401,9 +401,9 @@ RndrRenderer::isFrameComplete() const
 #   endif // end DEBUG_MSG
 
     setPrevRo = false; // HDM-183: detect Houdini is not "stuck"
-    if (not mFrameComplete && not mUpdateActive) {
+    if (!mFrameComplete && !mUpdateActive) {
         std::lock_guard<std::mutex> guard(mMutex);
-        if (not mUpdateActive && mRenderContext->isFrameComplete()) {
+        if (!mUpdateActive && mRenderContext->isFrameComplete()) {
             mFrameComplete = true;
             stopFrame();
         }

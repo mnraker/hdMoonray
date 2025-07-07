@@ -250,7 +250,7 @@ ArrasRenderer::updateStatusString(mcrt_dataio::ClientReceiverFb::BackendStat sta
 void
 ArrasRenderer::pause()
 {
-    if (not mPaused) {
+    if (!mPaused) {
         mPaused = true;
         mSDK->pause();
     }
@@ -301,7 +301,7 @@ ArrasRenderer::statusHandler(const std::string& msg)
 bool
 ArrasRenderer::allocate(scene_rdl2::rdl2::RenderOutput* ro, PixelData& pd, const PixelSize& request)
 {
-    if (not pd.mData) { // don't reallocate until resolve() so display does not blink
+    if (!pd.mData) { // don't reallocate until resolve() so display does not blink
         pd.mChannels = isBeauty(ro) ? 4 : request.mChannels;
         pd.mWidth = request.mWidth;
         pd.mHeight = request.mHeight;
@@ -328,7 +328,7 @@ ArrasRenderer::resolve(scene_rdl2::rdl2::RenderOutput* ro, PixelData& pd)
         pd.mChannels = 4;
     } else {
         unsigned n = mFbReceiver->getRenderOutputMTSafe(ro->getName(), pd.vec, pd.mWidth, pd.mHeight);
-        if (not n) return false; // ignore occasional bad data
+        if (!n) return false; // ignore occasional bad data
         pd.mChannels = n;
     }
     pd.mData = pd.vec.data();
@@ -371,7 +371,7 @@ ArrasRenderer::endUpdate()
     if (!mUpdateActive || mPaused) return;
     {
         std::lock_guard<std::mutex> guard(mMutex);
-        if (not mConnected || mSettings.getReconnectRequired()) {
+        if (!mConnected || mSettings.getReconnectRequired()) {
             connect(mSettings.getReconnectRequired());
             mSettings.clearReconnectRequired();
         }
